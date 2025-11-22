@@ -16,7 +16,7 @@ commandInfo = {
 
 async def run(msg, prefix, args):
     if not len(args) >= 1: 
-        return await msg.reply(f":x: Missing arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 3)
+        return await msg.reply(f":x: Missing arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
     
     deletedMessages = 0
     channel = msg.channel
@@ -24,22 +24,22 @@ async def run(msg, prefix, args):
     try: 
         msgToDelete = int(args[0])
     except Exception as e: 
-        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 3)
+        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
 
     if(len(args) == 1):  
         deletedMessages = len(await msg.channel.purge(limit = msgToDelete + 1))
-        return await channel.send(f":white_check_mark: {deletedMessages - 1} messages got deleted !", delete_after = 3)
+        return await channel.send(f":white_check_mark: {deletedMessages - 1} messages got deleted !", delete_after = 5)
     
     try:
         userToDeleteId = int(args[1].strip("<@!>"))
     except Exception as e: 
-        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 3)
+        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
            
     
     userToDelete = msg.guild.get_member(userToDeleteId) 
 
     if userToDelete == None : 
-        return await msg.reply(f":x: User **{args[1]}** not found", delete_after = 3)   
+        return await msg.reply(f":x: User **{args[1]}** not found", delete_after = 5)   
     
     if msg.author != userToDelete:
         await msg.delete()
@@ -55,4 +55,4 @@ async def run(msg, prefix, args):
     if deletedMessages == -1:    
         deletedMessages = 0
 
-    return await channel.send(f":white_check_mark: {deletedMessages} messages got deleted !", delete_after = 3)
+    return await channel.send(f":white_check_mark: {deletedMessages} messages got deleted !", delete_after = 5)

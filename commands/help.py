@@ -39,7 +39,7 @@ async def run(msg, prefix, args, commands):
             return await msg.reply(embed=help) 
         
         else:
-            return await msg.reply(f":x: Command **{args[0]}** not found ```{prefix}help```", delete_after = 3) 
+            return await msg.reply(f":x: Command **{args[0]}** not found ```{prefix}help```", delete_after = 5) 
 
     help = discord.Embed(
          title = "List of available commands:",
