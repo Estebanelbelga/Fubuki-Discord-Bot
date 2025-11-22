@@ -1,6 +1,6 @@
 commandInfo = {
     "name": "clear",
-    "description": "Deletes messages from the channel",
+    "description": "Delete messages from the channel",
     "usage": "clear [x] [@user]",
     "args": [
         {"name": "x",
@@ -16,7 +16,7 @@ commandInfo = {
 
 async def run(msg, prefix, args):
     if not len(args) >= 1: 
-        return await msg.reply(f":x: Missing arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
+        return await msg.reply(f":x: Missing **[x]** argument ```{prefix}help {commandInfo.get("name")}```")
     
     deletedMessages = 0
     channel = msg.channel
@@ -24,35 +24,28 @@ async def run(msg, prefix, args):
     try: 
         msgToDelete = int(args[0])
     except Exception as e: 
-        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
+        return await msg.reply(f":x: Bad **[x]** argument ```{prefix}help {commandInfo.get("name")}```")
 
     if(len(args) == 1):  
-        deletedMessages = len(await msg.channel.purge(limit = msgToDelete + 1))
-        return await channel.send(f":white_check_mark: {deletedMessages - 1} messages got deleted !", delete_after = 5)
-    
+        return await msg.channel.purge(limit = msgToDelete + 1)
+        
     try:
         userToDeleteId = int(args[1].strip("<@!>"))
     except Exception as e: 
-        return await msg.reply(f":x: Bad arguments ```{prefix}help {commandInfo.get("name")}```", delete_after = 5)
+        return await msg.reply(f":x: Bad **[@user]** argument ```{prefix}help {commandInfo.get("name")}```")
            
     
     userToDelete = msg.guild.get_member(userToDeleteId) 
 
     if userToDelete == None : 
-        return await msg.reply(f":x: User **{args[1]}** not found", delete_after = 5)   
+        return await msg.reply(f":x: User **'{args[1]}'** not found")   
     
     if msg.author != userToDelete:
         await msg.delete()
     else:
         msgToDelete += 1
-        deletedMessages = -1
 
     def is_userToDelete(m):
         return m.author == userToDelete
 
-    deletedMessages += len(await msg.channel.purge(limit = msgToDelete, check = is_userToDelete))
-
-    if deletedMessages == -1:    
-        deletedMessages = 0
-
-    return await channel.send(f":white_check_mark: {deletedMessages} messages got deleted !", delete_after = 5)
+    return await msg.channel.purge(limit = msgToDelete, check = is_userToDelete)

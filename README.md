@@ -6,6 +6,7 @@ To run this bot, you'll need:
 - Python package
     - `discord.py[voice]` 
     - `yt-dlp`
+    - `google-api-python-client`
 - Installed on your device
     - `ffmpeg`
 
@@ -15,6 +16,7 @@ Create a `config.json` file in the root of the project folder with the following
 ```json
 {
     "discordToken": "your discord token",
+    "googleApiKey": "your google api key",
     "prefix": "your bot's prefix"
 }
 ```

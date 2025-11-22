@@ -2,7 +2,7 @@ import discord
 
 commandInfo = {
     "name": "help",
-    "description": "Shows commands and what they do",
+    "description": "Show commands and what they do",
     "usage": "help [command]",
     "args": [
         {"name": "command",
@@ -39,7 +39,7 @@ async def run(msg, prefix, args, commands):
             return await msg.reply(embed=help) 
         
         else:
-            return await msg.reply(f":x: Command **{args[0]}** not found ```{prefix}help```", delete_after = 5) 
+            return await msg.reply(f":x: Command **'{args[0]}'** not found ```{prefix}help```") 
 
     help = discord.Embed(
          title = "List of available commands:",
@@ -47,6 +47,6 @@ async def run(msg, prefix, args, commands):
     )
 
     for command in commands:
-        help.add_field(name = f"{commands[command]["info"]["name"]}:", value = commands[command]["info"]["description"], inline = False)
+        help.add_field(name = f"{prefix}{commands[command]["info"]["name"]}:", value = commands[command]["info"]["description"], inline = False)
 
     return await msg.reply(embed=help)

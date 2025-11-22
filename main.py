@@ -28,6 +28,7 @@ async def on_message(msg):
         if msg.author.bot: return 
         if not msg.content.startswith(prefix): return
         userCmd = msg.content[len(prefix):].split()
+        args = userCmd[1:]
 
         if userCmd[0] in commands:
                 command = commands[userCmd[0]]["function"]
@@ -36,19 +37,11 @@ async def on_message(msg):
                 kwargs = {}
 
                 for item in inspection.parameters.items():
-                        if item[0] == "msg": 
-                                kwargs["msg"] = msg
-                        if item[0] == "prefix": 
-                                kwargs["prefix"] = prefix
-                        if item[0] == "args":
-                                kwargs["args"] = userCmd[1:]
-                        if item[0] == "bot":
-                                kwargs["bot"] = bot
-                        if item[0] == "commands":
-                                kwargs["commands"] = commands
-                        if item[0] == "audioPlayer":
-                                kwargs["audioPlayer"] = audioPlayer
-                
+                        if item[0] in locals():
+                                kwargs[item[0]] = locals()[item[0]]
+                        elif item[0] in globals():
+                                kwargs[item[0]] = globals()[item[0]]
+
                 return await command(**kwargs)
                 
 bot.run(discordToken, log_level=logging.WARNING)
